@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import mongoose, { connect } from 'mongoose';
-
+import path from 'path';
 const app=express();
 const port= process.env.PORT || 8080
 const url=process.env.DB_URL
@@ -26,7 +26,11 @@ app.get('/list',(req,res)=>{
     return res.status(200).json({message:"hii, how are you",success:'true'})
 })
 
+app.use(express.static(path.join(path.resolve(),"frontend","dist")))
 
+app.get("*", (req, res) => {
+    return res.sendFile(path.join(path.resolve(), "frontend", "dist", "index.html"));
+  });
 
 
 ConnectDB().then((connect)=>{
